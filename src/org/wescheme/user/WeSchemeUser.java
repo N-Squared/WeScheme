@@ -86,8 +86,7 @@ public class WeSchemeUser{
 				tx.rollback();
 			}
 			pm.close();
-		} 
-			
+		} 		
 	}
 
 	public boolean activate(){
