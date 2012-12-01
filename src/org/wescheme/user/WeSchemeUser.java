@@ -13,6 +13,7 @@ import org.wescheme.servlet.ConfirmationServlet;
 import org.wescheme.util.Crypt;
 import org.wescheme.util.PMF;
 import org.wescheme.util.Crypt.KeyNotFoundException;
+import org.wescheme.data.ImgDAO;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -37,7 +38,8 @@ public class WeSchemeUser{
 	//added
 	@Persistent
 	private int _imgData;
-	
+	private ImgDAO dao;
+		
 	public static final int STORAGE_SIZE = 5242880;
 		
 	public static byte[] makePasswordHash(String password, long salt){
@@ -110,15 +112,17 @@ public class WeSchemeUser{
 		return _data;
 	}
 	
-	WeSchemeUser(String username, String password, String email, String key){
+	public WeSchemeUser(String username, String password, String email, String key){
     	_name = username;
     	_salt = Crypt.makeLong();
     	_digest = makePasswordHash(password, _salt);
     	_active = true;
     	_email 	= email;
     }
-	
-	
+    
+	public ImgDAO getDAO(){
+		return dao;
+	}
 	
 
 }	
