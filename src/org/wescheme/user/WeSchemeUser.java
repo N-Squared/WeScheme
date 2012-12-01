@@ -34,6 +34,12 @@ public class WeSchemeUser{
 	@Persistent
 	private String _email;
 	
+	//added
+	@Persistent
+	private int _imgData;
+	
+	public static final int STORAGE_SIZE = 5242880;
+		
 	public static byte[] makePasswordHash(String password, long salt){
 		String p = password + salt;
 		return Crypt.hash(p);
@@ -88,6 +94,20 @@ public class WeSchemeUser{
 	
 	public boolean isActive(){
 		return _active;
+	}
+	
+	/**
+	*	COMMENT THIS
+	*/
+	public changeDataSize(int size){
+		_data += size;
+	}
+	
+	/**
+	*	COMMENT THIS
+	*/
+	public getDataSize(){
+		return _data;
 	}
 	
 	WeSchemeUser(String username, String password, String email, String key){

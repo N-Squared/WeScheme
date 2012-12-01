@@ -20,8 +20,7 @@ import java.util.logging.Logger;
 public class LoadProjectServlet extends HttpServlet {
 
     /**
-     * Returns program output if either pid or publicId is provided.
-     * Meant to be parsed by the JavaScript in org.wescheme.Program.
+     * Returns program XML if either pid or publicId is provided.
      */
     private static final long serialVersionUID = 1165047992267892812L;
     private static final Logger log = Logger.getLogger(LoadProjectServlet.class.getName());
