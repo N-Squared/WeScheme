@@ -1,3 +1,5 @@
+//e9cb7f966146983d03592d094c4c6709 <-- imgur key
+
 goog.provide("plt.wescheme.AjaxActions");
 
 
@@ -129,11 +131,6 @@ goog.require('plt.wescheme.Program');
   		    });
     };
 
-
-    
-    
-    
-    
     // deleteProject: number (program -> void) (-> void) -> void
     // Deletes a program.
     plt.wescheme.AjaxActions.prototype.deleteProject = function(pid, onSuccess, onFailure) {
@@ -152,8 +149,10 @@ goog.require('plt.wescheme.Program');
   		    });
     };
 
-    //addImage: 
-    //Facilitates adding an image.
+    // addImage: 
+    // Facilitates adding an image.
+    // Takes the path of the image and hands it off to the server to check data of and
+    // 
     plt.wescheme.AjaxActions.prototype.addImage = (function(pid, path, onSuccess, onFailure){
     jQuery.ajax({cache: false,
     	data : { pid:pid, path:path },
@@ -191,12 +190,9 @@ goog.require('plt.wescheme.Program');
     //Facilitates getting the images
     plt.wescheme.AjaxActions.prototype.getImages = (function(onSuccess, onFailure) {
     	var callback = function(data) {
-    	    var dom = jQuery(data);
-    	    onSuccess(dom);
+    	    
     	};
             var data = {};
-            // to prevent caching:
-            data.gensym = Math.random();
     	jQuery.ajax({cache: false,
     		     data: data,
     		     dataType: "json",
@@ -250,7 +246,7 @@ goog.require('plt.wescheme.Program');
     // Asynchronously record feedback from the author.
     plt.wescheme.AjaxActions.prototype.sendFeedback = function(author, type, feedbackText, onSuccess) {
 	jQuery.ajax({cache : false,
-  		     data : {author : author,
+  		     data : {author : author, 
                              type : type,
                              feedbackText : feedbackText },
                      datatype: "text",
