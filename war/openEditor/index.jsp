@@ -18,7 +18,7 @@
     <jsp:include page="/google-analytics.jsp"/>
 
 
-
+	<!-- defines the entire webpage Pikachu-->
 
     <link rel="stylesheet" type="text/css" href="/css/default.css" id="style" />
 
@@ -65,6 +65,8 @@
     <!-- Design recipe widget stuff -->
     <script src="/widget/js/DRwidget-min.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="/widget/css/editor.css"></link>
+	<!-- Image widget stuff -->
+    <script src="/Image/js/Image-min.js" type="text/javascript"></script>
 
     
     <script src="/js/submitpost-min.js" type="text/javascript"></script>
@@ -219,7 +221,7 @@
 	
   </head>
   
-  
+  <!--Pikachu-->
   <body>  
   	
   
@@ -295,13 +297,28 @@
         </div>
 
 
-
-
-
-
-
+	<!-- Definitions for image picker nodes -->
+	<div id="picker-form" style="position: absolute; left: -1000px; z-index: 10;">	
+		<div><!--header div: mostly for widget close button-->
+			<form><input type="button" id="picker-close" value="X"></form>
+		</div>
+		<div id="picker-images"><!--body div: contains pictures-->
+			<!--<script>
+				iterateFn(["https://dl.dropbox.com/u/97876165/Shittocommit/icant-001-spacewhale.gif",
+							"https://dl.dropbox.com/u/97876165/Shittocommit/icant-002-text.gif",
+							"https://dl.dropbox.com/u/97876165/Shittocommit/icant-003-tony.gif",
+							"https://dl.dropbox.com/u/97876165/Shittocommit/icant-008-thorerik.gif",
+							"https://dl.dropbox.com/u/97876165/Shittocommit/icant-009-steve.gif",
+							"https://dl.dropbox.com/u/97876165/Shittocommit/icant-010-cat.gif"]);
+			</script>-->
+		</div>
+		<div><!--footer-buttons div: haz buttons-->
+			<form><input type="file" id="picker-browser-result"><input type="submit" id="picker-browser-add" value="Add"></form>
+		</div>
+	</div>
 
 	
+
 	<div id="header">
 	  <h1>WeScheme</h1>
 	  <h2>
@@ -322,7 +339,9 @@
 	    <li><a id="save"><span>Save</span></a></li>
 	    <li><a id="share"><span>Share</span></a></li>
 	    <% } %>
-        <li><a id="recipe"><span>Recipe</span></a></li>
+        	<li><a id="recipe"><span>Recipe</span></a></li>
+		<!-- add image button here Pikachu -->
+		<li><a id="pic"><span>Image</span></a></li>
 	  </ul>
           <ul></ul>
           <!-- This is here to force the div height.  This may be unnecessary
@@ -407,17 +426,19 @@
 
   </body>
 
-
-
-
+  
+  <!--START OF JAVASCRIPT PORTION-->
   <script type="text/javascript">
-    var widget;
+    var widget, image;
     jQuery(document).ready(function() {
+
     widget = initializeWidget(myEditor.defn.impl.editor,
                               myEditor.getTokenizer());
 
     jQuery("#recipe").bind("click", function(e) { e.preventDefault(); e.stopPropagation(); widget.showWidget(); });
-    });
+
+	});
+    
     
     <% if (isEmbedded) { %>
     // If we're in embedded mode, start up a socket for cross domain messaging support.
@@ -441,5 +462,25 @@
    <% } %>
   </script>
 
+
+  <!-- Bind the hide/show each image that the user has Pikachu -->
+
+  <!-- Bind buttons that show up after the initial Image button is clicked -->
+  <!-- Bind the Image button to the thingamabob that would display the user's images Pikachu -->
+
+  <script type="text/javascript">
+    var picture;
+	
+	console.log(initImage)
+    jQuery(document).ready(function() {
+    picture = initImage(myEditor.defn.impl.editor);
+	console.log(picture);
+	jQuery("#pic").bind("click", function(e) { e.preventDefault(); e.stopPropagation(); picture.showPicker(); /*console.log("herp");*/ });
+    });
+
+
+    
+
+  </script>
 
 </html>

@@ -21,8 +21,18 @@ public class ImageUpload extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException {
 
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+        SessionManager sm = new SessionManager();
+
+        if( !sm.isIntentional(req, resp) ){
+            resp.sendError(401);
+            return;
+        }
+        String file = req.getParameter("file");
+        String author = req.getParameter("author");
+
         Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
-        BlobKey blobKey = blobs.get("myFile");
+        BlobKey blobKey = blobs.get(file);
 
         if (blobKey == null) {
             res.sendRedirect("/");
