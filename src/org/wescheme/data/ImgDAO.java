@@ -11,10 +11,10 @@ import com.googlecode.objectify.util.DAOBase;
 
 public class ImgDAO extends DAOBase {
 	static {
-		ObjectifyService.register(Feedback.class);
+		ObjectifyService.register(Img.class);
 	}
 	
-	public void saveFeedback(Feedback feedback) {
-		ofy().put(feedback);
+	public void saveFeedback(Img image) {
+		ofy().put(image);
 	}	
 }
