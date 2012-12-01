@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.wescheme.user.Session;
+import org.wescheme.user.SessionManager;
 import org.wescheme.user.WeSchemeUser;
 
 /**
@@ -21,18 +23,20 @@ public class PictureChecker extends HttpServlet {
 	
 	private File theFile;
 	
-	public int checkPic(File file, WeSchemeUser user){
+	public int Service(HttpServletRequest req, HttpServletResponse res){
+		SessionManager sm = new SessionManager();
+		theFile = new File(req.getParameter("file"));
+		Session session = sm.authenticate(req, res);
+		WeSchemeUser theUser = session.getUser();
 		if(checkExtension() == false)
 			return 1;
 		if(checkSize() == false)
 			return 2;
-		if(checkDataLimit(user) == false)
+		if(checkDataLimit(theUser) == false)
 			return 3;
-		return 0;		 
-		
-		
+		return 0;
 	}
-	
+
 	private boolean checkExtension(){
 		String accept[] = {".gif", ".jpeg", ".png", ".jpg"};
 		
@@ -46,7 +50,7 @@ public class PictureChecker extends HttpServlet {
 		}
 		String extension = name.substring(i,name.length());
 		for(int j = 0; j < accept.length; j++){
-			if(extension.equals(accept[j]))
+			if(extension.equalsIgnoreCase(accept[j]))
 				return true;				
 		}
 		return false;
