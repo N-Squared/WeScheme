@@ -16,9 +16,9 @@ public class Session implements Serializable {
 	private static final long serialVersionUID = -254267039192254438L;
 
 	private String _name;
-        private String _nickname;
+    private String _nickname;
 	private boolean _admin;
-
+	private WeSchemeUser weUse;
 	
 	public Session(User user, boolean isAdmin) {
 
@@ -35,6 +35,7 @@ public class Session implements Serializable {
 		_name = user.getName() + "@wescheme.org";
 		_nickname = user.getName();
 		_admin = false; // WeSchemeUsers are not admin -- delegate this to app engine
+		weUse = user;
 	}
 	
 
@@ -58,7 +59,9 @@ public class Session implements Serializable {
 	public boolean isAdmin(){
 		return _admin;
 	}
-	
+	public WeSchemeUser getUser(){
+		return weUse;
+	}
 	public boolean isValid(Crypt.Token t, Crypt.Key k) throws IOException{
 		
 		String s = Base64.encodeObject(this);
