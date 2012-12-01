@@ -38,6 +38,7 @@ public class WeSchemeUser{
 	//added
 	@Persistent
 	private int _imgData;
+	
 	private ImgDAO dao;
 		
 	public static final int STORAGE_SIZE = 5242880;
@@ -100,16 +101,18 @@ public class WeSchemeUser{
 	
 	/**
 	*	COMMENT THIS
+	 * @return 
 	*/
-	public changeDataSize(int size){
-		_data += size;
+	public void changeDataSize(int size){
+		_imgData += size;
 	}
 	
 	/**
 	*	COMMENT THIS
+	 * @return 
 	*/
-	public getDataSize(){
-		return _data;
+	public int getDataSize(){
+		return _imgData;
 	}
 	
 	public WeSchemeUser(String username, String password, String email, String key){

@@ -1,9 +1,13 @@
-import java.IO.File;
+package org.wescheme.servlet;
+
+import java.io.File;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.wescheme.user.WeSchemeUser;
 
 /**
 *	Checks if file is compatible;
@@ -15,14 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PictureChecker extends HttpServlet {
 	
-	private File thefile;
+	private File theFile;
 	
 	public int checkPic(File file, WeSchemeUser user){
 		if(checkExtension() == false)
 			return 1;
 		if(checkSize() == false)
 			return 2;
-		if(checkDataLimit() == false)
+		if(checkDataLimit(user) == false)
 			return 3;
 		return 0;		 
 		
@@ -35,13 +39,13 @@ public class PictureChecker extends HttpServlet {
 		int i;
 		String name = theFile.getName();
 		for(i = name.length()-1; i > 0; i--){
-			if(name.charAt(i) == ".")
+			if(name.charAt(i) == '.')
 				break;
 			else
 				continue;
 		}
 		String extension = name.substring(i,name.length());
-		for(int j = 0; j < accept.size; j++){
+		for(int j = 0; j < accept.length; j++){
 			if(extension.equals(accept[j]))
 				return true;				
 		}

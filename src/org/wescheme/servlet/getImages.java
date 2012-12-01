@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.wescheme.data.ImgDAO;
 import org.wescheme.data.Img;
+import org.wescheme.data.ImgDAO;
 import org.wescheme.user.Session;
 import org.wescheme.user.SessionManager;
 
@@ -46,27 +46,26 @@ public class getImages extends HttpServlet {
 		SessionManager sm = new SessionManager();
 		Session userSession = sm.authenticate(request, response);
 		
-	
 		// Side effect: force loading of the classes.
-		ImgDAO dao = userSession.getUser().getDAO();
+		ImgDAO dao = new ImgDAO();
 		
 		
 		// Next, start dumping content till we hit CPU limit
 		long startTime = System.currentTimeMillis();
 		Objectify ofy = ObjectifyService.begin();
-		Query<Picture> query = ofy.query(Img.class);
+		Query<Img> query = ofy.query(Img.class);
 		String cursorStr = request.getParameter("cursor");
 		if (cursorStr != null) {
 			query.startCursor(Cursor.fromWebSafeString(cursorStr));
 		}
 	
-		JSONArray listOfImgs = new JSONArray();
+		JSONArray listOfPictures = new JSONArray();
 		String nextCursorString = null;
 		
 		QueryResultIterator<Img> iterator = query.iterator();
 		while(iterator.hasNext()) {
-			Img pic = iterator.next();
-			listOfImgs.add(pic.toJSONObject());
+			Img picture = iterator.next();
+			listOfPictures.add(picture.toJSONObject());
 			if (System.currentTimeMillis() - startTime > LIMIT_MILLIS) {
 				nextCursorString = iterator.getCursor().toWebSafeString();
 				break;
@@ -75,7 +74,7 @@ public class getImages extends HttpServlet {
 
 		// Finally, dump the content back to the user.
 		JSONObject result = new JSONObject();
-		result.put("Images", listOfImgs);
+		result.put("pictures", listOfPictures);
 		result.put("cursor", nextCursorString);
 		response.setContentType("text/plain");
 		response.getWriter().write(result.toString());
