@@ -134,7 +134,7 @@ goog.require('plt.wescheme.Program');
     // Deletes a program.
     plt.wescheme.AjaxActions.prototype.deleteProject = function(pid, onSuccess, onFailure) {
 	jQuery.ajax({cache : false,
-  		     data : { pid: pid },
+  		data : { pid: pid },
   		     dataType: "xml",
   		     type: "POST",
   		     url: "/deleteProject",
@@ -148,8 +148,58 @@ goog.require('plt.wescheme.Program');
   		    });
     };
 
-
-
+    //addImage: 
+    //Facilitates adding an image.
+    plt.wescheme.AjaxActions.prototype.addImage = function(pid, file, onSuccess, onFailure) {
+    	jQuery.ajax({cache : false,
+    		data : { pid:pid, file:file },
+    		dataType: "json"
+    		type: "IMG"
+    		url: "/addImage"
+    		success: function(data) {
+    			onSuccess(jQuery(data));
+    		},
+    		error: function(xhr) {
+    			onFailure(xhr.statusText);
+    		}, 
+    		xhr: function(settings) { return new XMLHttpRequest(settings); }
+    	});
+    };
+    //deleteImage:
+    //Facilitates deleting an image.
+	jQuery.ajax({cache : false,
+		data : { pid:pid, file:file },
+		dataType: "json"
+		type: "IMG"
+		url: "/addImage"
+		success: function(data) {
+			onSuccess(jQuery(data));
+		},
+		error: function(xhr) {
+			onFailure(xhr.statusText);
+		}, 
+		xhr: function(settings) { return new XMLHttpRequest(settings); }
+	});
+	};
+    
+    //getImages:
+    //Facilitates getting the images
+    plt.wescheme.AjaxActions.prototype.addImage = function(onSuccess, onFailure) {
+    	jQuery.ajax({cache : false,
+    		data : { pid:pid, file:file },
+    		dataType: "json"
+    		type: "IMG"
+    		url: "/addImage"
+    		success: function(data) {
+    			onSuccess(jQuery(data));
+    		},
+    		error: function(xhr) {
+    			onFailure(xhr.statusText);
+    		}, 
+    		xhr: function(settings) { return new XMLHttpRequest(settings); }
+    	});
+    };
+    
 
     // save: { pid : (U undefined number),
     //         title: string,
