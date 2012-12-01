@@ -130,6 +130,10 @@ goog.require('plt.wescheme.Program');
     };
 
 
+    
+    
+    
+    
     // deleteProject: number (program -> void) (-> void) -> void
     // Deletes a program.
     plt.wescheme.AjaxActions.prototype.deleteProject = function(pid, onSuccess, onFailure) {
@@ -150,55 +154,61 @@ goog.require('plt.wescheme.Program');
 
     //addImage: 
     //Facilitates adding an image.
-    plt.wescheme.AjaxActions.prototype.addImage = function(pid, file, onSuccess, onFailure) {
-    	jQuery.ajax({cache : false,
-    		data : { pid:pid, file:file },
-    		dataType: "json"
-    		type: "IMG"
-    		url: "/addImage"
-    		success: function(data) {
-    			onSuccess(jQuery(data));
-    		},
-    		error: function(xhr) {
-    			onFailure(xhr.statusText);
-    		}, 
-    		xhr: function(settings) { return new XMLHttpRequest(settings); }
+    plt.wescheme.AjaxActions.prototype.addImage = (function(pid, path, onSuccess, onFailure){
+    jQuery.ajax({cache: false,
+    	data : { pid:pid, path:path },
+    	type : "json",
+    	url  : "/addImage",
+    	success: function(data){
+    		onSuccess(jQuery(data));
+    	},
+    	error: function(xhr) {
+    		onFailure(xhr.statusText);
+    	},
+    	xhr: function(settings) { return new XMLHttpRequest(settings); }
     	});
-    };
+    });
+    
     //deleteImage:
     //Facilitates deleting an image.
-	jQuery.ajax({cache : false,
-		data : { pid:pid, file:file },
-		dataType: "json"
-		type: "IMG"
-		url: "/addImage"
-		success: function(data) {
-			onSuccess(jQuery(data));
-		},
-		error: function(xhr) {
-			onFailure(xhr.statusText);
-		}, 
-		xhr: function(settings) { return new XMLHttpRequest(settings); }
-	});
-	};
+    plt.wescheme.AjaxActiond.prototype.deleteImage = (function(){
+    jQuery.ajax({cache:false,
+    	dataType : "json",
+    	type: "DEL",
+    	url: "/deleteImage",
+    	success: function(data){
+    		onSuccess(jQuery(data));
+    	},
+    	error: function(xhr) {
+    		onFailure(xhr.statusText);
+    	},
+    	xhr: function(settings) { return new XMLHttpRequest(settings); }	
+    	});
+    });
+    
     
     //getImages:
     //Facilitates getting the images
-    plt.wescheme.AjaxActions.prototype.addImage = function(onSuccess, onFailure) {
-    	jQuery.ajax({cache : false,
-    		data : { pid:pid, file:file },
-    		dataType: "json"
-    		type: "IMG"
-    		url: "/addImage"
-    		success: function(data) {
-    			onSuccess(jQuery(data));
-    		},
-    		error: function(xhr) {
-    			onFailure(xhr.statusText);
-    		}, 
-    		xhr: function(settings) { return new XMLHttpRequest(settings); }
-    	});
-    };
+    plt.wescheme.AjaxActions.prototype.getImages = (function(onSuccess, onFailure) {
+    	var callback = function(data) {
+    	    var dom = jQuery(data);
+    	    onSuccess(dom);
+    	};
+            var data = {};
+            // to prevent caching:
+            data.gensym = Math.random();
+    	jQuery.ajax({cache: false,
+    		     data: data,
+    		     dataType: "json",
+    		     type: "GET",
+    		     url: "/getImages",
+    		     success: callback,
+    		     error: function(xhr) {
+    			 onFailure(xhr.statusText);
+    		     },
+    		     xhr: function(settings) { return new XMLHttpRequest(settings); }
+    		    });
+    });
     
 
     // save: { pid : (U undefined number),
