@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.wescheme.data.DAO;
-import org.wescheme.data.Feedback;
+import org.wescheme.data.ImgDAO;
+import org.wescheme.data.Img;
 import org.wescheme.user.Session;
 import org.wescheme.user.SessionManager;
 
@@ -45,31 +45,28 @@ public class getImages extends HttpServlet {
 		// First, check that the person is admin.
 		SessionManager sm = new SessionManager();
 		Session userSession = sm.authenticate(request, response);
-		if (!userSession.isAdmin()) {
-			response.sendError(401);
-			return;
-		}
+		
 	
 		// Side effect: force loading of the classes.
-		DAO dao = new DAO();
+		ImgDAO dao = userSession.getUser().getDAO();
 		
 		
 		// Next, start dumping content till we hit CPU limit
 		long startTime = System.currentTimeMillis();
 		Objectify ofy = ObjectifyService.begin();
-		Query<Feedback> query = ofy.query(Feedback.class);
+		Query<Picture> query = ofy.query(Img.class);
 		String cursorStr = request.getParameter("cursor");
 		if (cursorStr != null) {
 			query.startCursor(Cursor.fromWebSafeString(cursorStr));
 		}
 	
-		JSONArray listOfFeedbacks = new JSONArray();
+		JSONArray listOfImgs = new JSONArray();
 		String nextCursorString = null;
 		
-		QueryResultIterator<Feedback> iterator = query.iterator();
+		QueryResultIterator<Img> iterator = query.iterator();
 		while(iterator.hasNext()) {
-			Feedback feedback = iterator.next();
-			listOfFeedbacks.add(feedback.toJSONObject());
+			Img pic = iterator.next();
+			listOfImgs.add(pic.toJSONObject());
 			if (System.currentTimeMillis() - startTime > LIMIT_MILLIS) {
 				nextCursorString = iterator.getCursor().toWebSafeString();
 				break;
@@ -78,7 +75,7 @@ public class getImages extends HttpServlet {
 
 		// Finally, dump the content back to the user.
 		JSONObject result = new JSONObject();
-		result.put("feedbacks", listOfFeedbacks);
+		result.put("Images", listOfImgs);
 		result.put("cursor", nextCursorString);
 		response.setContentType("text/plain");
 		response.getWriter().write(result.toString());
